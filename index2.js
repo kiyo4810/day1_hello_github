@@ -22,5 +22,12 @@ const message2 = jyuku(theahoCat);
 const message3 = jyuku(thecatName);
 console.log(message2);
 console.log(message3);
-console.log("コンソールに表示される文字だよ");
-console.log("大晦日になにしとんねんおまえ！");
+
+const theGaisha = "メルセデス・ベンツ";
+function seibi(car){
+    return "整備して" + car + "を修理します";
+}
+const message4 = seibi(theGaisha);
+const message5 = seibi(theahoCat);
+console.log(message4);
+console.log(message5);
