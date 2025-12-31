@@ -1,4 +1,4 @@
-const myName = "記世彦";
+const myName = "キヨヒコ";
 
 const generateGreeting = (name) => { return `こんにちは、${name}さん！GitHub 100日チャレンジへようこそ。`; };
 
