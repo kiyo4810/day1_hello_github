@@ -1,4 +1,4 @@
-//変数nameを宣言し私の名前を底に入れる
+//変数nameを宣言し私の名前をそこに入れる
 const myName = "きよひこまる";
 function sayHello(userName){
     return "こんにちは、" + userName + "さん！Githubの学習をはじめましょう";
