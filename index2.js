@@ -19,6 +19,8 @@ function jyuku(catName){
     return "我が塾はアホ猫、" + catName + "を賢い猫にします」";
 }
 const message2 = jyuku(theahoCat);
+const message3 = jyuku(thecatName);
 console.log(message2);
+console.log(message3);
 console.log("コンソールに表示される文字だよ");
 console.log("大晦日になにしとんねんおまえ！");
