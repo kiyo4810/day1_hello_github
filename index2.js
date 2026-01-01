@@ -18,7 +18,7 @@ document.getElementById("out3").innerText = "大晦日になにしとんねん�
 // --- 塾セクション ---
 const theahoCat = "パンくん";
 function jyuku(ahoCat){
-    return "我が塾はアホ猫、" + ahoCat + "を賢い猫にします」";
+    return "我が塾はアホ猫、" + ahoCat + "を賢い猫にします";
 }
 const message2 = jyuku(theahoCat);
 const message3 = jyuku(thecatName);
