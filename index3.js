@@ -5,4 +5,4 @@ function catjuku(cat){
 }
 const message = catjuku(thecat);
 console.log(message);
-document.getElementById(m01).innerText = message;
+document.getElementById("m01").innerText = message;
