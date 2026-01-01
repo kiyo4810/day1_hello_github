@@ -15,8 +15,8 @@ const theahoCat = "パンくん";
 //関数は「特定の処理をまとめた命令セット」です。
 //userName は**引数（ひきすう）**と呼ばれ、関数を動かすときに外から渡されるデータを受け取る窓口になります。
 //return（戻り値）は、この関数が実行された結果として「外に返す値」を指します。ここでは、挨拶文を作って返しています。
-function jyuku(catName){
-    return "我が塾はアホ猫、" + catName + "を賢い猫にします」";
+function jyuku(ahoCat){
+    return "我が塾はアホ猫、" + ahoCat + "を賢い猫にします」";
 }
 const message2 = jyuku(theahoCat);
 const message3 = jyuku(thecatName);
@@ -31,3 +31,4 @@ const message4 = seibi(theGaisha);
 const message5 = seibi(theahoCat);
 console.log(message4);
 console.log(message5);
+// 公開用URLはこちら　
