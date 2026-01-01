@@ -5,6 +5,7 @@ function catjuku(cat){
     return "この塾は" + cat +"を賢い猫にします";
 }
 const message1 = catjuku(thecat);
+console.log(catjuku(thecat));
 console.log(message1);
 console.log(typeof message1);
 let ufoCat;
