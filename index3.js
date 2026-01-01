@@ -6,6 +6,9 @@ function catjuku(cat){
 }
 const message1 = catjuku(thecat);
 console.log(message1);
+console.log(typeof message1);
+const ufoCat;
+console.log(typeof ufoCat);
 document.getElementById("m01").innerText = message1;
 
 //猫保育園
