@@ -1,5 +1,7 @@
 //猫塾
 const thecat = "パンくん";
+let yaruki = 2;
+console.log(yaruki*100);
 console.log(thecat);
 function catjuku(cat){
     return "この塾は" + cat +"を賢い猫にします";
