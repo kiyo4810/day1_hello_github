@@ -2,203 +2,396 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>簡易・青色申告シミュレーター</title>
+    <title>青色申告決算書シミュレーター</title>
     <style>
-      body {
-        font-family: sans-serif;
-        background-color: #f4f7f6;
-        padding: 20px;
-        color: #333;
+      :root {
+        --line-color: #2e7d32;
+        --bg-color: #f0f4f0;
       }
-      .container {
-        max-width: 800px;
+      body {
+        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+        background-color: #ccc;
+        padding: 20px;
+        font-size: 13px;
+      }
+      .page {
+        width: 1000px;
         margin: auto;
-        background: #fff;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        background: white;
+        padding: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        position: relative;
+        border: 2px solid var(--line-color);
       }
       h1 {
+        color: var(--line-color);
         text-align: center;
-        color: #2c3e50;
-        border-bottom: 2px solid #27ae60;
-        padding-bottom: 10px;
+        font-size: 24px;
+        margin-bottom: 0;
+      }
+      .subtitle {
+        text-align: center;
+        color: var(--line-color);
+        margin-top: 0;
+        font-weight: bold;
       }
 
-      .section {
-        margin-bottom: 30px;
+      .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr 1fr;
+        gap: 10px;
+        margin-top: 20px;
       }
-      .input-group {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-      }
-      input[type="number"] {
-        width: 150px;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        text-align: right;
-        font-size: 1rem;
-      }
-
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
+        border: 2px solid var(--line-color);
       }
       th,
       td {
-        border: 1px solid #ddd;
-        padding: 12px;
-        text-align: left;
+        border: 1px solid var(--line-color);
+        padding: 4px;
+        height: 24px;
       }
       th {
-        background-color: #f8f9fa;
-      }
-      .result-row {
-        background-color: #e8f4fd;
-        font-weight: bold;
-      }
-      .total-row {
-        background-color: #27ae60;
-        color: white;
-        font-weight: bold;
-      }
-      .currency {
-        text-align: right;
-      }
-      .currency::after {
-        content: " 円";
+        background: var(--bg-color);
+        color: var(--line-color);
+        font-weight: normal;
+        font-size: 11px;
+        text-align: center;
       }
 
-      .hint {
-        font-size: 0.85rem;
-        color: #666;
-        margin-top: 5px;
+      .num-circle {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--line-color);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 18px;
+        font-size: 11px;
+        margin-right: 4px;
+      }
+      input {
+        width: 90%;
+        border: none;
+        text-align: right;
+        font-size: 14px;
+        outline: none;
+        font-family: monospace;
+      }
+      input:focus {
+        background-color: #ffffd0;
+      }
+      .readonly {
+        background-color: #f9f9f9;
+        font-weight: bold;
+        pointer-events: none;
+      }
+
+      .label-cell {
+        background: white;
+        color: #333;
+      }
+      .section-title {
+        background: var(--bg-color);
+        text-align: center;
+        width: 20px;
+        color: var(--line-color);
+        font-weight: bold;
+      }
+      .subtotal {
+        background: #e8f5e9;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>青色申告決算シミュレーター</h1>
+    <div class="page">
+      <h1>令和<input type="text" style="width: 30px; text-align: center; border-bottom: 1px solid #000" value="0" />年分 所得税青色申告決算書（一般用）</h1>
+      <p class="subtitle">損 益 計 算 書</p>
 
-      <div class="section">
-        <h3>1. 売上・原価の入力</h3>
-        <div class="input-group">
-          <label>売上金額（年間）</label>
-          <input type="number" id="sales" value="0" oninput="calculate()" />
+      <div class="grid-container">
+        <div class="col">
+          <table>
+            <tr>
+              <th colspan="2">科 目</th>
+              <th>金 額 (円)</th>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">1</span>売上金額</td>
+              <td></td>
+              <td><input type="number" id="f1" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td rowspan="5" class="section-title">売上原価</td>
+              <td class="label-cell"><span class="num-circle">2</span>期首商品棚卸高</td>
+              <td><input type="number" id="f2" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">3</span>仕入金額</td>
+              <td><input type="number" id="f3" oninput="calc()" /></td>
+            </tr>
+            <tr class="subtotal">
+              <td class="label-cell"><span class="num-circle">4</span>小計 (②+③)</td>
+              <td><input type="number" id="f4" class="readonly" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">5</span>期末商品棚卸高</td>
+              <td><input type="number" id="f5" oninput="calc()" /></td>
+            </tr>
+            <tr class="subtotal">
+              <td class="label-cell"><span class="num-circle">6</span>差引原価 (④-⑤)</td>
+              <td><input type="number" id="f6" class="readonly" /></td>
+            </tr>
+            <tr class="subtotal">
+              <td colspan="2" class="label-cell"><span class="num-circle">7</span>差引金額 (①-⑥)</td>
+              <td><input type="number" id="f7" class="readonly" /></td>
+            </tr>
+
+            <tr>
+              <td rowspan="9" class="section-title">経費</td>
+              <td class="label-cell"><span class="num-circle">8</span>租税公課</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">9</span>荷造運賃</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">10</span>水道光熱費</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">11</span>旅費交通費</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">12</span>通信費</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">13</span>広告宣伝費</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">14</span>接待交際費</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">15</span>損害保険料</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">16</span>修繕費</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+          </table>
         </div>
-        <div class="input-group">
-          <label>売上原価（仕入など）</label>
-          <input type="number" id="cost" value="0" oninput="calculate()" />
+
+        <div class="col">
+          <table>
+            <tr>
+              <th colspan="2">科 目</th>
+              <th>金 額 (円)</th>
+            </tr>
+            <tr>
+              <td rowspan="16" class="section-title">経費</td>
+              <td class="label-cell"><span class="num-circle">17</span>消耗品費</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">18</span>減価償却費</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">19</span>福利厚生費</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">20</span>給料賃金</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">21</span>外注工賃</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">22</span>利子割引料</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">23</span>地代家賃</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">24</span>貸倒金</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">25</span></td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">26</span></td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">27</span></td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">28</span></td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">29</span></td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">30</span></td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">31</span>雑費</td>
+              <td><input type="number" class="exp" oninput="calc()" /></td>
+            </tr>
+            <tr class="subtotal">
+              <td class="label-cell"><span class="num-circle">32</span>計</td>
+              <td><input type="number" id="f32" class="readonly" /></td>
+            </tr>
+            <tr class="subtotal">
+              <td colspan="2" class="label-cell"><span class="num-circle">33</span>差引金額 (⑦-㉜)</td>
+              <td><input type="number" id="f33" class="readonly" /></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="col">
+          <table>
+            <tr>
+              <th colspan="2">科 目</th>
+              <th>金 額 (円)</th>
+            </tr>
+            <tr>
+              <td rowspan="4" class="section-title">引当金等</td>
+              <td class="label-cell"><span class="num-circle">34</span>貸倒引当金</td>
+              <td><input type="number" class="res" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">35</span></td>
+              <td><input type="number" class="res" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">36</span></td>
+              <td><input type="number" class="res" oninput="calc()" /></td>
+            </tr>
+            <tr class="subtotal">
+              <td class="label-cell"><span class="num-circle">37</span>計</td>
+              <td><input type="number" id="f37" class="readonly" /></td>
+            </tr>
+
+            <tr>
+              <td rowspan="5" class="section-title">準備金等</td>
+              <td class="label-cell"><span class="num-circle">38</span>専従者給与</td>
+              <td><input type="number" class="res" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">39</span>貸倒引当金</td>
+              <td><input type="number" class="res" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">40</span></td>
+              <td><input type="number" class="res" oninput="calc()" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell"><span class="num-circle">41</span></td>
+              <td><input type="number" class="res" oninput="calc()" /></td>
+            </tr>
+            <tr class="subtotal">
+              <td class="label-cell"><span class="num-circle">42</span>計</td>
+              <td><input type="number" id="f42" class="readonly" /></td>
+            </tr>
+
+            <tr class="subtotal">
+              <td colspan="2" class="label-cell"><span class="num-circle">43</span>青色申告特別控除前の所得金額</td>
+              <td><input type="number" id="f43" class="readonly" /></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="label-cell"><span class="num-circle">44</span>青色申告特別控除額</td>
+              <td>
+                <select id="f44" onchange="calc()" style="width: 100%; border: none; text-align: right">
+                  <option value="650000">650,000</option>
+                  <option value="550000">550,000</option>
+                  <option value="100000">100,000</option>
+                  <option value="0">0</option>
+                </select>
+              </td>
+            </tr>
+            <tr class="subtotal" style="background: #c8e6c9">
+              <td colspan="2" class="label-cell"><span class="num-circle">45</span>所得金額 (43-44)</td>
+              <td><input type="number" id="f45" class="readonly" /></td>
+            </tr>
+          </table>
         </div>
       </div>
-
-      <div class="section">
-        <h3>2. 経費の入力</h3>
-        <div class="input-group">
-          <label>地代家賃（仕事分）</label>
-          <input type="number" id="rent" class="expense" value="0" oninput="calculate()" />
-        </div>
-        <div class="input-group">
-          <label>広告宣伝費</label>
-          <input type="number" id="ads" class="expense" value="0" oninput="calculate()" />
-        </div>
-        <div class="input-group">
-          <label>その他経費（合計）</label>
-          <input type="number" id="other_exp" class="expense" value="0" oninput="calculate()" />
-        </div>
-      </div>
-
-      <div class="section">
-        <h3>3. 控除の設定</h3>
-        <div class="input-group">
-          <label>青色申告特別控除額</label>
-          <select id="deduction_type" onchange="calculate()">
-            <option value="650000">65万円 (電子申告等)</option>
-            <option value="550000">55万円</option>
-            <option value="100000">10万円</option>
-          </select>
-        </div>
-      </div>
-
-      <hr />
-
-      <h3>計算結果（損益計算書 概算）</h3>
-      <table>
-        <tr>
-          <th>項目</th>
-          <th>金額</th>
-        </tr>
-        <tr>
-          <td>(1) 売上金額</td>
-          <td id="res_sales" class="currency">0</td>
-        </tr>
-        <tr>
-          <td>(2) 売上原価</td>
-          <td id="res_cost" class="currency">0</td>
-        </tr>
-        <tr class="result-row">
-          <td>(3) 差引売上総利益 (1 - 2)</td>
-          <td id="res_gross_profit" class="currency">0</td>
-        </tr>
-        <tr>
-          <td>(4) 経費合計</td>
-          <td id="res_total_exp" class="currency">0</td>
-        </tr>
-        <tr class="result-row">
-          <td>(5) 差し引き所得金額 (3 - 4)</td>
-          <td id="res_income" class="currency">0</td>
-        </tr>
-        <tr>
-          <td>(6) 青色申告特別控除額</td>
-          <td id="res_deduction" class="currency">0</td>
-        </tr>
-        <tr class="total-row">
-          <td>課税対象となる所得金額 (5 - 6)</td>
-          <td id="res_taxable" class="currency">0</td>
-        </tr>
-      </table>
-      <p class="hint">※所得税額を計算する際は、ここからさらに「所得控除（基礎控除等）」を差し引く必要があります。</p>
     </div>
 
     <script>
-      function calculate() {
-        // 入力値の取得
-        const sales = parseFloat(document.getElementById("sales").value) || 0;
-        const cost = parseFloat(document.getElementById("cost").value) || 0;
-        const deductionSetting = parseFloat(document.getElementById("deduction_type").value) || 0;
+      function calc() {
+        const getVal = (id) => parseFloat(document.getElementById(id)?.value) || 0;
+        const setVal = (id, val) => {
+          document.getElementById(id).value = Math.floor(val);
+        };
 
-        // 経費の合計計算
+        // 1. 売上原価の計算
+        const f1 = getVal("f1");
+        const f2 = getVal("f2");
+        const f3 = getVal("f3");
+        const f4 = f2 + f3;
+        setVal("f4", f4);
+
+        const f5 = getVal("f5");
+        const f6 = f4 - f5;
+        setVal("f6", f6);
+
+        // 2. 差引金額 (7)
+        const f7 = f1 - f6;
+        setVal("f7", f7);
+
+        // 3. 経費の合計 (32)
         let totalExp = 0;
-        const expenses = document.querySelectorAll(".expense");
-        expenses.forEach((input) => {
-          totalExp += parseFloat(input.value) || 0;
+        document.querySelectorAll(".exp").forEach((el) => {
+          totalExp += parseFloat(el.value) || 0;
         });
+        setVal("f32", totalExp);
 
-        // 利益等の計算
-        const grossProfit = sales - cost;
-        const income = grossProfit - totalExp;
+        // 4. 差引金額 (33)
+        const f33 = f7 - totalExp;
+        setVal("f33", f33);
 
-        // 青色申告特別控除の適用（所得以上の控除はできないため、所得金額を上限とする）
-        const actualDeduction = Math.min(Math.max(0, income), deductionSetting);
-        const taxableIncome = Math.max(0, income - actualDeduction);
+        // 5. 各種引当金・専従者給与等の集計
+        let sum34to36 = 0;
+        document.querySelectorAll(".res").forEach((el, index) => {
+          if (index < 3) sum34to36 += parseFloat(el.value) || 0;
+        });
+        setVal("f37", sum34to36);
 
-        // 結果を画面に反映
-        document.getElementById("res_sales").innerText = sales.toLocaleString();
-        document.getElementById("res_cost").innerText = cost.toLocaleString();
-        document.getElementById("res_gross_profit").innerText = grossProfit.toLocaleString();
-        document.getElementById("res_total_exp").innerText = totalExp.toLocaleString();
-        document.getElementById("res_income").innerText = income.toLocaleString();
-        document.getElementById("res_deduction").innerText = actualDeduction.toLocaleString();
-        document.getElementById("res_taxable").innerText = taxableIncome.toLocaleString();
+        let sum38to41 = 0;
+        document.querySelectorAll(".res").forEach((el, index) => {
+          if (index >= 3) sum38to41 += parseFloat(el.value) || 0;
+        });
+        setVal("f42", sum38to41);
+
+        // 6. 特別控除前の所得金額 (43)
+        // 本来は33 + (34..36の戻し入れ等) - (38..41) などの計算ですが、簡易的に 33 - 42 としています
+        const f43 = f33 - sum38to41;
+        setVal("f43", f43);
+
+        // 7. 特別控除額 (44) と 最終所得 (45)
+        const deductionSetting = getVal("f44");
+        const actualDeduction = Math.min(Math.max(0, f43), deductionSetting);
+        setVal("f45", f43 - actualDeduction);
       }
-
-      // 初期実行
-      calculate();
     </script>
   </body>
 </html>
