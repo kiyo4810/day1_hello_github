@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <title>所得税青色申告決算書 完全再現版（経費項目拡充）</title>
+    <title>所得税青色申告決算書 究極の家計簿版</title>
     <style>
       :root {
         --line-green: #2e7d32;
@@ -11,7 +11,7 @@
       }
       body {
         background: #444;
-        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+        font-family: "Hiragino Kaku Gothic ProN", sans-serif;
         display: flex;
         flex-direction: column;
         align-items: left;
@@ -20,105 +20,82 @@
       .page-container {
         background: white;
         width: 1000px;
-        padding: 50px;
+        padding: 40px;
         margin-bottom: 40px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         position: relative;
-        border: 1px solid #ccc;
-      }
-      .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 20px;
       }
       .form-title {
         font-size: 24px;
         font-weight: bold;
         color: var(--line-green);
         text-align: center;
-        flex-grow: 1;
-        border-bottom: 2px solid var(--line-green);
-        padding-bottom: 10px;
-      }
-      .page-tag {
-        border: 1px solid var(--line-green);
-        padding: 5px 10px;
-        color: var(--line-green);
-        font-weight: bold;
-        writing-mode: vertical-rl;
-        position: absolute;
-        left: 10px;
-        top: 100px;
+        border-bottom: 3px double var(--line-green);
+        margin: 10px 0;
       }
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 10px;
         table-layout: fixed;
         border: 2px solid var(--line-green);
+        margin-bottom: 10px;
       }
       th,
       td {
         border: 1px solid var(--line-green);
-        padding: 4px;
+        height: 26px;
         font-size: 11px;
-        height: 24px;
+        padding: 0 4px;
+        overflow: hidden;
       }
       th {
         background: var(--bg-pale);
+        font-weight: normal;
         text-align: center;
       }
       .col-num {
-        width: 25px;
+        width: 30px;
         text-align: center;
         background: var(--bg-pale);
         font-size: 9px;
       }
       input {
         width: 100%;
+        height: 100%;
         border: none;
         text-align: right;
         font-size: 14px;
-        outline: none;
         background: transparent;
-        font-family: "Courier New", Courier, monospace;
+        font-family: "Courier New", monospace;
+        outline: none;
       }
-      input:focus {
-        background: var(--input-yellow);
+      input.text-left {
+        text-align: left;
+        font-size: 11px;
       }
       .readonly {
         background: #eee;
+        font-weight: bold;
         pointer-events: none;
-        font-weight: bold;
-      }
-      .section-title {
-        background: var(--bg-pale);
-        font-weight: bold;
-        text-align: left;
-        padding-left: 10px;
-        border-bottom: 2px solid var(--line-green);
       }
       .footer-num {
         text-align: center;
-        margin-top: 20px;
         font-weight: bold;
+        margin-top: 10px;
       }
       .nav-panel {
         position: fixed;
         right: 20px;
         top: 20px;
-        background: rgba(255, 255, 255, 0.9);
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        background: white;
+        padding: 10px;
+        border: 2px solid var(--line-green);
         z-index: 1000;
       }
-      .nav-panel button {
+      button {
         display: block;
         width: 100%;
-        margin: 5px 0;
-        padding: 5px;
+        margin: 2px 0;
         cursor: pointer;
       }
     </style>
@@ -130,278 +107,226 @@
       <button onclick="document.getElementById('p2').scrollIntoView()">2. 月別内訳</button>
       <button onclick="document.getElementById('p3').scrollIntoView()">3. 減価償却</button>
       <button onclick="document.getElementById('p4').scrollIntoView()">4. 貸借対照表</button>
-      <hr />
-      <strong>状態</strong><br /><small id="status">全項目自動計算中</small>
     </div>
 
     <div class="page-container" id="p1">
-      <div class="page-tag">提出用</div>
-      <div class="page-header">
-        <div style="width: 150px">令和<input type="text" value="0" style="width: 30px; text-align: center; border-bottom: 1px solid #000" />年分</div>
-        <div class="form-title">所得税青色申告決算書（一般用）</div>
-        <div style="width: 150px; text-align: right">FA3000</div>
-      </div>
-
-      <table id="pl-table">
+      <div class="form-title">所得税青色申告決算書（一般用）</div>
+      <table>
+        <colgroup>
+          <col width="12%" />
+          <col width="3%" />
+          <col width="18%" />
+          <col width="2%" />
+          <col width="12%" />
+          <col width="3%" />
+          <col width="18%" />
+          <col width="2%" />
+          <col width="12%" />
+          <col width="3%" />
+          <col width="18%" />
+        </colgroup>
         <tr>
-          <th colspan="2">科 目</th>
-          <th colspan="2">金 額 (円)</th>
-          <th colspan="2">科 目</th>
-          <th colspan="2">金 額 (円)</th>
-          <th colspan="2">科 目</th>
-          <th colspan="2">金 額 (円)</th>
+          <th colspan="3">売上原価</th>
+          <th></th>
+          <th colspan="3">経 費</th>
+          <th></th>
+          <th colspan="3">所得金額</th>
         </tr>
         <tr>
-          <td colspan="2">売上(収入)金額</td>
+          <td>売上金額</td>
           <td class="col-num">①</td>
-          <td><input type="text" id="f1" class="calc" onblur="fmt(this)" /></td>
-          <td rowspan="13" style="writing-mode: vertical-rl">経費</td>
+          <td><input type="text" id="f1" onblur="fmt(this)" /></td>
+          <td rowspan="15" style="writing-mode: vertical-rl; background: var(--bg-pale)">経費</td>
           <td>租税公課</td>
           <td class="col-num">⑧</td>
           <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td rowspan="10" style="writing-mode: vertical-rl">各種引当金・準備金等</td>
-          <td>繰戻貸倒引当金</td>
+          <td rowspan="10" style="writing-mode: vertical-rl; background: var(--bg-pale)">引当金</td>
+          <td>繰戻貸倒</td>
           <td class="col-num">㉞</td>
           <td><input type="text" class="calc res-rev" onblur="fmt(this)" /></td>
         </tr>
         <tr>
-          <td rowspan="5" style="writing-mode: vertical-rl">売上原価</td>
-          <td>期首商品棚卸高</td>
+          <td>期首棚卸</td>
           <td class="col-num">②</td>
-          <td><input type="text" id="f2" class="calc" onblur="fmt(this)" /></td>
+          <td><input type="text" id="f2" onblur="fmt(this)" /></td>
           <td>荷造運賃</td>
           <td class="col-num">⑨</td>
           <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td>(繰戻額等)</td>
+          <td>(繰戻額)</td>
           <td class="col-num">㉟</td>
           <td><input type="text" class="calc res-rev" onblur="fmt(this)" /></td>
         </tr>
         <tr>
           <td>仕入金額</td>
           <td class="col-num">③</td>
-          <td><input type="text" id="f3" class="calc" onblur="fmt(this)" /></td>
-          <td>水道光熱費</td>
+          <td><input type="text" id="f3" onblur="fmt(this)" /></td>
+          <td>水道光熱</td>
           <td class="col-num">⑩</td>
           <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td></td>
-          <td class="col-num">㊱</td>
-          <td><input type="text" class="calc res-rev" onblur="fmt(this)" /></td>
-        </tr>
-        <tr>
-          <td>小計 (②+③)</td>
-          <td class="col-num">④</td>
-          <td><input type="text" id="f4" class="readonly" /></td>
-          <td>旅費交通費</td>
-          <td class="col-num">⑪</td>
-          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td>計 (㉞+㉟+㊱)</td>
+          <td>計(㉞-㊱)</td>
           <td class="col-num">㊲</td>
           <td><input type="text" id="f37" class="readonly" /></td>
         </tr>
         <tr>
-          <td>期末商品棚卸高</td>
-          <td class="col-num">⑤</td>
-          <td><input type="text" id="f5" class="calc" onblur="fmt(this)" /></td>
+          <td>小計(②+③)</td>
+          <td class="col-num">④</td>
+          <td><input type="text" id="f4" class="readonly" /></td>
           <td>通信費</td>
           <td class="col-num">⑫</td>
           <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td>専従者給与</td>
+          <td>専従者給</td>
           <td class="col-num">㊳</td>
           <td><input type="text" id="f38" class="calc res-exp" onblur="fmt(this)" /></td>
         </tr>
         <tr>
-          <td>差引原価(④-⑤)</td>
-          <td class="col-num">⑥</td>
-          <td><input type="text" id="f6" class="readonly" /></td>
-          <td>広告宣伝費</td>
+          <td>期末棚卸</td>
+          <td class="col-num">⑤</td>
+          <td><input type="text" id="f5" onblur="fmt(this)" /></td>
+          <td>広告宣伝</td>
           <td class="col-num">⑬</td>
           <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td>繰入貸倒引当金</td>
+          <td>繰入貸倒</td>
           <td class="col-num">㊴</td>
           <td><input type="text" class="calc res-exp" onblur="fmt(this)" /></td>
         </tr>
         <tr>
-          <td colspan="2">差引金額 (①-⑥)</td>
-          <td class="col-num">⑦</td>
-          <td><input type="text" id="f7" class="readonly" /></td>
-          <td>接待交際費</td>
+          <td>差引原価</td>
+          <td class="col-num">⑥</td>
+          <td><input type="text" id="f6" class="readonly" /></td>
+          <td>接待交際</td>
           <td class="col-num">⑭</td>
           <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td>(繰入額等)</td>
-          <td class="col-num">㊵</td>
-          <td><input type="text" class="calc res-exp" onblur="fmt(this)" /></td>
-        </tr>
-        <tr>
-          <td colspan="4" rowspan="3" style="font-size: 9px; vertical-align: top; padding: 10px">※この青色申告決算書は機械で読み取りますので、黒のボールペンで書いてください。</td>
-          <td>損害保険料</td>
-          <td class="col-num">⑮</td>
-          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td></td>
-          <td class="col-num">㊶</td>
-          <td><input type="text" class="calc res-exp" onblur="fmt(this)" /></td>
-        </tr>
-        <tr>
-          <td>修繕費</td>
-          <td class="col-num">⑯</td>
-          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td>計 (㊳から㊶まで)</td>
+          <td>計(㊳-㊶)</td>
           <td class="col-num">㊷</td>
           <td><input type="text" id="f42" class="readonly" /></td>
         </tr>
         <tr>
-          <td>消耗品費</td>
-          <td class="col-num">⑰</td>
+          <td>差引金額</td>
+          <td class="col-num">⑦</td>
+          <td><input type="text" id="f7" class="readonly" /></td>
+          <td>修繕費</td>
+          <td class="col-num">⑯</td>
           <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td colspan="2">特別控除前所得(㉝+㊲-㊷)</td>
+          <td colspan="2">控除前所得</td>
           <td class="col-num">㊸</td>
           <td><input type="text" id="f43" class="readonly" /></td>
         </tr>
         <tr>
-          <td colspan="2">減価償却費</td>
-          <td class="col-num">⑱</td>
-          <td><input type="text" id="f18" class="calc exp" onblur="fmt(this)" /></td>
-          <td>福利厚生費</td>
-          <td class="col-num">⑲</td>
+          <td colspan="3" rowspan="3" style="font-size: 10px">※究極の家計簿として活用ください</td>
+          <td>消耗品費</td>
+          <td class="col-num">⑰</td>
           <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td colspan="2">青色申告特別控除額</td>
+          <td colspan="2">特別控除</td>
           <td class="col-num">㊹</td>
-          <td><input type="text" id="f44" value="650,000" class="calc" onblur="fmt(this)" /></td>
+          <td><input type="text" id="f44" value="650,000" onblur="fmt(this)" /></td>
         </tr>
         <tr>
-          <td colspan="2">給料賃金</td>
-          <td class="col-num">⑳</td>
-          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td>利子割引料</td>
-          <td class="col-num">㉒</td>
-          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td colspan="2" style="background: #c8e6c9; font-weight: bold">所 得 金 額 (㊸-㊹)</td>
+          <td>減価償却</td>
+          <td class="col-num">⑱</td>
+          <td><input type="text" id="f18" class="readonly" /></td>
+          <td colspan="2" style="font-weight: bold">所得金額</td>
           <td class="col-num">㊺</td>
           <td><input type="text" id="f45" class="readonly" style="background: #c8e6c9" /></td>
         </tr>
         <tr>
-          <td colspan="2">外注工賃</td>
-          <td class="col-num">㉑</td>
+          <td>福利厚生</td>
+          <td class="col-num">⑲</td>
+          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
+          <td colspan="3"></td>
+        </tr>
+        <tr>
+          <td>給料賃金</td>
+          <td class="col-num">⑳</td>
           <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
           <td>地代家賃</td>
           <td class="col-num">㉓</td>
           <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td colspan="4"></td>
+          <td><input type="text" class="text-left" placeholder="科目㉕" /></td>
+          <td class="col-num">㉕</td>
+          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
         </tr>
         <tr>
-          <td colspan="2" class="label">貸倒金</td>
+          <td>外注工賃</td>
+          <td class="col-num">㉑</td>
+          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
+          <td>貸倒金</td>
           <td class="col-num">㉔</td>
           <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td colspan="2" class="label">雑費</td>
+          <td><input type="text" class="text-left" placeholder="科目㉖" /></td>
+          <td class="col-num">㉖</td>
+          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
+        </tr>
+        <tr>
+          <td>利子割引</td>
+          <td class="col-num">㉒</td>
+          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
+          <td><input type="text" class="text-left" placeholder="科目㉗" /></td>
+          <td class="col-num">㉗</td>
+          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
+          <td><input type="text" class="text-left" placeholder="科目㉘" /></td>
+          <td class="col-num">㉘</td>
+          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
+        </tr>
+        <tr>
+          <td><input type="text" class="text-left" placeholder="科目㉙" /></td>
+          <td class="col-num">㉙</td>
+          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
+          <td><input type="text" class="text-left" placeholder="科目㉚" /></td>
+          <td class="col-num">㉚</td>
+          <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
+          <td>雑費</td>
           <td class="col-num">㉛</td>
           <td><input type="text" class="calc exp" onblur="fmt(this)" /></td>
-          <td colspan="4"></td>
         </tr>
         <tr style="background: var(--bg-pale)">
-          <td colspan="2">経費計</td>
+          <td>経費計</td>
           <td class="col-num">㉜</td>
           <td><input type="text" id="f32" class="readonly" /></td>
-          <td colspan="2">差引金額 (⑦-㉜)</td>
+          <td colspan="2">差引(⑦-㉜)</td>
           <td class="col-num">㉝</td>
           <td><input type="text" id="f33" class="readonly" /></td>
-          <td colspan="4"></td>
+          <td colspan="3"></td>
         </tr>
       </table>
       <div class="footer-num">- 1 -</div>
     </div>
 
     <div class="page-container" id="p2">
-      <div class="page-tag">提出用</div>
-      <div class="section-title">○ 月別売上（収入）金額及び仕入金額</div>
+      <div class="form-title">月別売上・仕入金額</div>
       <table>
         <tr>
           <th>月</th>
-          <th>売上(収入)金額</th>
+          <th>売上金額</th>
           <th>仕入金額</th>
           <th>月</th>
-          <th>売上(収入)金額</th>
+          <th>売上金額</th>
           <th>仕入金額</th>
         </tr>
-        <tr>
-          <td>1月</td>
-          <td><input type="text" class="m-s" oninput="sumM()" /></td>
-          <td><input type="text" class="m-c" oninput="sumM()" /></td>
-          <td>7月</td>
-          <td><input type="text" class="m-s" oninput="sumM()" /></td>
-          <td><input type="text" class="m-c" oninput="sumM()" /></td>
-        </tr>
-        <tr>
-          <td>2月</td>
-          <td><input type="text" class="m-s" oninput="sumM()" /></td>
-          <td><input type="text" class="m-c" oninput="sumM()" /></td>
-          <td>8月</td>
-          <td><input type="text" class="m-s" oninput="sumM()" /></td>
-          <td><input type="text" class="m-c" oninput="sumM()" /></td>
-        </tr>
-        <tr>
-          <td>3月</td>
-          <td><input type="text" class="m-s" oninput="sumM()" /></td>
-          <td><input type="text" class="m-c" oninput="sumM()" /></td>
-          <td>9月</td>
-          <td><input type="text" class="m-s" oninput="sumM()" /></td>
-          <td><input type="text" class="m-c" oninput="sumM()" /></td>
-        </tr>
-        <tr>
-          <td>4月</td>
-          <td><input type="text" class="m-s" oninput="sumM()" /></td>
-          <td><input type="text" class="m-c" oninput="sumM()" /></td>
-          <td>10月</td>
-          <td><input type="text" class="m-s" oninput="sumM()" /></td>
-          <td><input type="text" class="m-c" oninput="sumM()" /></td>
-        </tr>
-        <tr>
-          <td>5月</td>
-          <td><input type="text" class="m-s" oninput="sumM()" /></td>
-          <td><input type="text" class="m-c" oninput="sumM()" /></td>
-          <td>11月</td>
-          <td><input type="text" class="m-s" oninput="sumM()" /></td>
-          <td><input type="text" class="m-c" oninput="sumM()" /></td>
-        </tr>
-        <tr>
-          <td>6月</td>
-          <td><input type="text" class="m-s" oninput="sumM()" /></td>
-          <td><input type="text" class="m-c" oninput="sumM()" /></td>
-          <td>12月</td>
-          <td><input type="text" class="m-s" oninput="sumM()" /></td>
-          <td><input type="text" class="m-c" oninput="sumM()" /></td>
-        </tr>
+        <tbody id="month-rows"></tbody>
         <tr style="background: #eee">
           <td>計</td>
           <td><input type="text" id="ms_total" class="readonly" /></td>
           <td><input type="text" id="mc_total" class="readonly" /></td>
-          <td colspan="3">※合計は1ページ目の①③へ自動転記</td>
+          <td colspan="3"></td>
         </tr>
       </table>
       <div class="footer-num">- 2 -</div>
     </div>
 
     <div class="page-container" id="p3">
-      <div class="page-tag">提出用</div>
-      <div class="section-title">○ 減価償却費の計算</div>
+      <div class="form-title">減価償却費の計算</div>
       <table>
         <tr>
           <th>資産名称</th>
           <th>取得価額</th>
-          <th>償却の基礎</th>
           <th>耐用年数</th>
           <th>本年償却費</th>
           <th>未償却残高</th>
         </tr>
-        <tr>
-          <td><input type="text" placeholder="例：PC" /></td>
-          <td><input type="text" onblur="fmt(this)" /></td>
-          <td><input type="text" onblur="fmt(this)" /></td>
-          <td><input type="text" style="text-align: center" /></td>
-          <td><input type="text" class="d-val" oninput="sumD()" onblur="fmt(this)" /></td>
-          <td><input type="text" onblur="fmt(this)" /></td>
-        </tr>
+        <tbody id="dep-rows"></tbody>
         <tr style="background: #eee">
           <td>計</td>
-          <td colspan="3"></td>
+          <td colspan="2"></td>
           <td><input type="text" id="d_total" class="readonly" /></td>
           <td></td>
         </tr>
@@ -410,8 +335,7 @@
     </div>
 
     <div class="page-container" id="p4">
-      <div class="page-tag">提出用</div>
-      <div class="page-header"><div class="form-title">貸 借 対 照 表</div></div>
+      <div class="form-title">貸 借 対 照 表</div>
       <div style="display: flex; gap: 10px">
         <table style="width: 50%">
           <tr>
@@ -420,7 +344,7 @@
             <th>期末</th>
           </tr>
           <tr>
-            <td colspan="2">現金・当座預金</td>
+            <td colspan="2">現金・預金</td>
             <td><input type="text" onblur="fmt(this)" /></td>
             <td><input type="text" class="ast-e" oninput="sumBS()" onblur="fmt(this)" /></td>
           </tr>
@@ -435,8 +359,8 @@
             <td><input type="text" id="bs_inv_e" class="readonly" /></td>
           </tr>
           <tr style="background: #eee">
-            <td colspan="2">資産合計</td>
-            <td><input type="text" class="readonly" /></td>
+            <td>資産計</td>
+            <td colspan="2"></td>
             <td><input type="text" id="ast_total" class="readonly" /></td>
           </tr>
         </table>
@@ -447,7 +371,7 @@
             <th>期末</th>
           </tr>
           <tr>
-            <td colspan="2">買掛金・借入金</td>
+            <td colspan="2">買掛金</td>
             <td><input type="text" onblur="fmt(this)" /></td>
             <td><input type="text" class="liab-e" oninput="sumBS()" onblur="fmt(this)" /></td>
           </tr>
@@ -457,13 +381,13 @@
             <td><input type="text" class="liab-e" oninput="sumBS()" onblur="fmt(this)" /></td>
           </tr>
           <tr>
-            <td colspan="2">今期所得(㊸番)</td>
+            <td colspan="2">所得(㊸番)</td>
             <td><input type="text" class="readonly" /></td>
             <td><input type="text" id="bs_income" class="readonly" /></td>
           </tr>
           <tr style="background: #eee">
-            <td colspan="2">負債資本合計</td>
-            <td><input type="text" class="readonly" /></td>
+            <td>負債計</td>
+            <td colspan="2"></td>
             <td><input type="text" id="liab_total" class="readonly" /></td>
           </tr>
         </table>
@@ -473,16 +397,26 @@
 
     <script>
       const nf = new Intl.NumberFormat("ja-JP");
+      const val = (s) => parseFloat(String(s).replace(/,/g, "")) || 0;
+      const set = (id, v) => {
+        const el = document.getElementById(id);
+        if (el) el.value = nf.format(v);
+      };
+
+      // 月別行生成
+      const mRows = document.getElementById("month-rows");
+      for (let i = 1; i <= 6; i++) {
+        mRows.innerHTML += `<tr><td>${i}月</td><td><input type="text" class="m-s" oninput="sumM()"></td><td><input type="text" class="m-c" oninput="sumM()"></td><td>${i + 6}月</td><td><input type="text" class="m-s" oninput="sumM()"></td><td><input type="text" class="m-c" oninput="sumM()"></td></tr>`;
+      }
+      // 減価償却行生成
+      const dRows = document.getElementById("dep-rows");
+      for (let i = 0; i < 5; i++) {
+        dRows.innerHTML += `<tr><td><input type="text" class="text-left"></td><td><input type="text" onblur="fmt(this)"></td><td><input type="text"></td><td><input type="text" class="d-val" oninput="sumD()" onblur="fmt(this)"></td><td><input type="text" onblur="fmt(this)"></td></tr>`;
+      }
+
       function fmt(el) {
         el.value = el.value ? nf.format(val(el.value)) : "";
         calc();
-      }
-      function val(str) {
-        return parseFloat(String(str).replace(/,/g, "")) || 0;
-      }
-      function set(id, v) {
-        const el = document.getElementById(id);
-        if (el) el.value = nf.format(v);
       }
 
       function sumM() {
@@ -492,8 +426,8 @@
         document.querySelectorAll(".m-c").forEach((e) => (c += val(e.value)));
         set("ms_total", s);
         set("mc_total", c);
-        document.getElementById("f1").value = nf.format(s);
-        document.getElementById("f3").value = nf.format(c);
+        set("f1", s);
+        set("f3", c);
         calc();
       }
 
@@ -501,7 +435,7 @@
         let t = 0;
         document.querySelectorAll(".d-val").forEach((e) => (t += val(e.value)));
         set("d_total", t);
-        document.getElementById("f18").value = nf.format(t);
+        set("f18", t);
         calc();
       }
 
@@ -517,9 +451,9 @@
       }
 
       function calc() {
-        const f1 = val(document.getElementById("f1").value);
-        const f2 = val(document.getElementById("f2").value);
-        const f3 = val(document.getElementById("f3").value);
+        const f1 = val(document.getElementById("f1").value),
+          f2 = val(document.getElementById("f2").value),
+          f3 = val(document.getElementById("f3").value);
         const f4 = f2 + f3;
         set("f4", f4);
         const f5 = val(document.getElementById("f5").value);
@@ -528,38 +462,29 @@
         const f7 = f1 - f6;
         set("f7", f7);
 
-        // 経費計 ㉜
-        let expSum = 0;
-        document.querySelectorAll(".exp").forEach((e) => (expSum += val(e.value)));
-        set("f32", expSum);
-
-        // 差引金額 ㉝
-        const f33 = f7 - expSum;
+        let exp = 0;
+        document.querySelectorAll(".exp").forEach((e) => (exp += val(e.value)));
+        exp += val(document.getElementById("f18").value); // 減価償却費
+        set("f32", exp);
+        const f33 = f7 - exp;
         set("f33", f33);
 
-        // 引当金繰戻計 ㊲
-        let revSum = 0;
-        document.querySelectorAll(".res-rev").forEach((e) => (revSum += val(e.value)));
-        set("f37", revSum);
+        let rev = 0;
+        document.querySelectorAll(".res-rev").forEach((e) => (rev += val(e.value)));
+        set("f37", rev);
+        let resE = 0;
+        document.querySelectorAll(".res-exp").forEach((e) => (resE += val(e.value)));
+        set("f42", resE);
 
-        // 引当金・専従者給与計 ㊷
-        let resExpSum = 0;
-        document.querySelectorAll(".res-exp").forEach((e) => (resExpSum += val(e.value)));
-        set("f42", resExpSum);
-
-        // 特別控除前所得 ㊸
-        const f43 = f33 + revSum - resExpSum;
+        const f43 = f33 + rev - resE;
         set("f43", f43);
-
-        // 所得金額 ㊺
-        const f44 = val(document.getElementById("f44").value);
-        const ded = Math.min(Math.max(0, f43), f44);
+        const ded = Math.min(Math.max(0, f43), val(document.getElementById("f44").value));
         set("f45", f43 - ded);
 
         // BS連動
-        document.getElementById("bs_inv_s").value = nf.format(f2);
-        document.getElementById("bs_inv_e").value = nf.format(f5);
-        document.getElementById("bs_income").value = nf.format(f43);
+        set("bs_inv_s", f2);
+        set("bs_inv_e", f5);
+        set("bs_income", f43);
         sumBS();
       }
     </script>
