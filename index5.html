@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>所得税青色申告決算書 全ページシミュレーター</title>
+    <style>
+      :root {
+        --main-green: #2e7d32;
+        --bg-light: #f1f8f1;
+      }
+      body {
+        font-family: sans-serif;
+        background: #555;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+      .page {
+        background: white;
+        width: 900px;
+        padding: 40px;
+        margin-bottom: 30px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        border: 2px solid var(--main-green);
+      }
+      h1,
+      h2 {
+        color: var(--main-green);
+        text-align: center;
+      }
+      .page-num {
+        text-align: center;
+        font-weight: bold;
+        margin-top: 10px;
+        border-top: 1px solid #ccc;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+        table-layout: fixed;
+      }
+      th,
+      td {
+        border: 1px solid var(--main-green);
+        padding: 5px;
+        font-size: 12px;
+      }
+      th {
+        background: var(--bg-light);
+      }
+
+      input[type="number"],
+      input[type="text"] {
+        width: 95%;
+        border: none;
+        text-align: right;
+        font-size: 14px;
+        outline: none;
+      }
+      input:focus {
+        background: #fffde7;
+      }
+      .readonly {
+        background: #eee;
+        pointer-events: none;
+        font-weight: bold;
+      }
+      .label {
+        background: var(--bg-light);
+        width: 180px;
+      }
+      .num-circle {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 1px solid var(--main-green);
+        border-radius: 50%;
+        text-align: center;
+        font-size: 10px;
+        margin-right: 5px;
+      }
+
+      .header-box {
+        border: 1px solid #000;
+        padding: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .nav-info {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 100;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="nav-info">
+      <strong>自動計算中</strong><br />
+      <small>1〜4ページすべて連動</small>
+    </div>
+
+    <div class="page">
+      <h2>所得税青色申告決算書（一般用）- 損益計算書</h2>
+      <table>
+        <tr>
+          <th colspan="2">科 目</th>
+          <th>金 額</th>
+          <th colspan="2">科 目</th>
+          <th>金 額</th>
+        </tr>
+        <tr>
+          <td class="label"><span class="num-circle">1</span>売上金額</td>
+          <td></td>
+          <td><input type="number" id="p1_f1" oninput="calcAll()" /></td>
+          <td class="label" rowspan="4">経費</td>
+          <td class="label"><span class="num-circle">8</span>租税公課</td>
+          <td><input type="number" class="exp" oninput="calcAll()" /></td>
+        </tr>
+        <tr>
+          <td class="label" rowspan="5">売上原価</td>
+          <td class="label"><span class="num-circle">2</span>期首棚卸</td>
+          <td><input type="number" id="p1_f2" oninput="calcAll()" /></td>
+          <td class="label"><span class="num-circle">9</span>荷造運賃</td>
+          <td><input type="number" class="exp" oninput="calcAll()" /></td>
+        </tr>
+        <tr>
+          <td class="label"><span class="num-circle">3</span>仕入金額</td>
+          <td><input type="number" id="p1_f3" oninput="calcAll()" /></td>
+          <td class="label"><span class="num-circle">10</span>水道光熱費</td>
+          <td><input type="number" class="exp" oninput="calcAll()" /></td>
+        </tr>
+        <tr>
+          <td class="label"><span class="num-circle">4</span>小計</td>
+          <td><input type="number" id="p1_f4" class="readonly" /></td>
+          <td class="label"><span class="num-circle">11</span>旅費交通費</td>
+          <td><input type="number" class="exp" oninput="calcAll()" /></td>
+        </tr>
+        <tr>
+          <td class="label"><span class="num-circle">5</span>期末棚卸</td>
+          <td><input type="number" id="p1_f5" oninput="calcAll()" /></td>
+          <td class="label" rowspan="5">...</td>
+          <td class="label"><span class="num-circle">12</span>通信費</td>
+          <td><input type="number" class="exp" oninput="calcAll()" /></td>
+        </tr>
+        <tr>
+          <td class="label"><span class="num-circle">6</span>差引原価</td>
+          <td><input type="number" id="p1_f6" class="readonly" /></td>
+          <td class="label"><span class="num-circle">13</span>広告宣伝費</td>
+          <td><input type="number" class="exp" oninput="calcAll()" /></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="label"><span class="num-circle">7</span>差引金額(1-6)</td>
+          <td><input type="number" id="p1_f7" class="readonly" /></td>
+          <td class="label"><span class="num-circle">31</span>雑費</td>
+          <td><input type="number" class="exp" oninput="calcAll()" /></td>
+        </tr>
+        <tr style="background: #e8f5e9">
+          <td colspan="4" class="label"><span class="num-circle">32</span>経費合計</td>
+          <td><input type="number" id="p1_f32" class="readonly" /></td>
+        </tr>
+        <tr>
+          <td colspan="4" class="label"><span class="num-circle">33</span>差引金額(7-32)</td>
+          <td><input type="number" id="p1_f33" class="readonly" /></td>
+        </tr>
+        <tr>
+          <td colspan="4" class="label"><span class="num-circle">43</span>控除前所得</td>
+          <td><input type="number" id="p1_f43" class="readonly" /></td>
+        </tr>
+        <tr>
+          <td colspan="4" class="label"><span class="num-circle">44</span>青色申告特別控除額</td>
+          <td><input type="number" id="p1_f44" value="650000" oninput="calcAll()" /></td>
+        </tr>
+        <tr style="background: #c8e6c9">
+          <td colspan="4" class="label"><span class="num-circle">45</span>所得金額</td>
+          <td><input type="number" id="p1_f45" class="readonly" /></td>
+        </tr>
+      </table>
+      <div class="page-num">- 1 -</div>
+    </div>
+
+    <div class="page">
+      <h2>月別売上(収入)金額及び仕入金額</h2>
+      <table>
+        <tr>
+          <th>月</th>
+          <th>売上金額</th>
+          <th>仕入金額</th>
+        </tr>
+        <tr>
+          <td>1月</td>
+          <td><input type="number" class="m-sales" oninput="calcAll()" /></td>
+          <td><input type="number" class="m-cost" oninput="calcAll()" /></td>
+        </tr>
+        <tr>
+          <td>2月</td>
+          <td><input type="number" class="m-sales" oninput="calcAll()" /></td>
+          <td><input type="number" class="m-cost" oninput="calcAll()" /></td>
+        </tr>
+        <tr>
+          <td>...12月へ</td>
+          <td><input type="number" class="m-sales" oninput="calcAll()" /></td>
+          <td><input type="number" class="m-cost" oninput="calcAll()" /></td>
+        </tr>
+        <tr class="readonly">
+          <td>合計</td>
+          <td><input type="number" id="p2_sales_total" class="readonly" /></td>
+          <td><input type="number" id="p2_cost_total" class="readonly" /></td>
+        </tr>
+      </table>
+      <p><small>※ここの合計額が1ページの売上(1)と仕入(3)に自動反映されます。</small></p>
+      <div class="page-num">- 2 -</div>
+    </div>
+
+    <div class="page">
+      <h2>減価償却費の計算</h2>
+      <table>
+        <tr>
+          <th>資産名称</th>
+          <th>取得価額</th>
+          <th>耐用年数</th>
+          <th>本年償却費</th>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder="例：PC" /></td>
+          <td><input type="number" class="dep-base" oninput="calcAll()" /></td>
+          <td><input type="number" /></td>
+          <td><input type="number" class="dep-val" oninput="calcAll()" /></td>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder="例：車両" /></td>
+          <td><input type="number" class="dep-base" oninput="calcAll()" /></td>
+          <td><input type="number" /></td>
+          <td><input type="number" class="dep-val" oninput="calcAll()" /></td>
+        </tr>
+        <tr class="readonly">
+          <td>合計</td>
+          <td></td>
+          <td></td>
+          <td><input type="number" id="p3_dep_total" class="readonly" /></td>
+        </tr>
+      </table>
+      <div class="page-num">- 3 -</div>
+    </div>
+
+    <div class="page">
+      <h2>貸借対照表</h2>
+      <div style="display: flex; gap: 20px">
+        <table style="width: 50%">
+          <tr>
+            <th colspan="2">資産の部</th>
+          </tr>
+          <tr>
+            <td class="label">現金・預金</td>
+            <td><input type="number" class="asset" oninput="calcAll()" /></td>
+          </tr>
+          <tr>
+            <td class="label">売掛金</td>
+            <td><input type="number" class="asset" oninput="calcAll()" /></td>
+          </tr>
+          <tr>
+            <td class="label">棚卸資産</td>
+            <td><input type="number" id="p4_inventory" class="readonly" /></td>
+          </tr>
+          <tr style="background: #eee">
+            <td>資産合計</td>
+            <td><input type="number" id="p4_asset_total" class="readonly" /></td>
+          </tr>
+        </table>
+        <table style="width: 50%">
+          <tr>
+            <th colspan="2">負債・資本の部</th>
+          </tr>
+          <tr>
+            <td class="label">買掛金</td>
+            <td><input type="number" class="debt" oninput="calcAll()" /></td>
+          </tr>
+          <tr>
+            <td class="label">元入金</td>
+            <td><input type="number" class="debt" oninput="calcAll()" /></td>
+          </tr>
+          <tr>
+            <td class="label">今期所得</td>
+            <td><input type="number" id="p4_income" class="readonly" /></td>
+          </tr>
+          <tr style="background: #eee">
+            <td>負債資本合計</td>
+            <td><input type="number" id="p4_debt_total" class="readonly" /></td>
+          </tr>
+        </table>
+      </div>
+      <div class="page-num">- 4 -</div>
+    </div>
+
+    <script>
+      function calcAll() {
+        // --- 2ページ目（月別）から1ページ目へ反映 ---
+        let mSales = 0;
+        document.querySelectorAll(".m-sales").forEach((el) => (mSales += Number(el.value)));
+        document.getElementById("p2_sales_total").value = mSales;
+        document.getElementById("p1_f1").value = mSales; // 売上1に反映
+
+        let mCost = 0;
+        document.querySelectorAll(".m-cost").forEach((el) => (mCost += Number(el.value)));
+        document.getElementById("p2_cost_total").value = mCost;
+        document.getElementById("p1_f3").value = mCost; // 仕入3に反映
+
+        // --- 3ページ目（減価償却）の合計 ---
+        let depTotal = 0;
+        document.querySelectorAll(".dep-val").forEach((el) => (depTotal += Number(el.value)));
+        document.getElementById("p3_dep_total").value = depTotal;
+
+        // --- 1ページ目（損益計算書）の計算 ---
+        const f1 = Number(document.getElementById("p1_f1").value);
+        const f2 = Number(document.getElementById("p1_f2").value);
+        const f3 = Number(document.getElementById("p1_f3").value);
+        const f4 = f2 + f3;
+        document.getElementById("p1_f4").value = f4;
+
+        const f5 = Number(document.getElementById("p1_f5").value);
+        const f6 = f4 - f5;
+        document.getElementById("p1_f6").value = f6;
+
+        const f7 = f1 - f6;
+        document.getElementById("p1_f7").value = f7;
+
+        let expTotal = 0;
+        document.querySelectorAll(".exp").forEach((el) => (expTotal += Number(el.value)));
+        expTotal += depTotal; // 減価償却費を合算
+        document.getElementById("p1_f32").value = expTotal;
+
+        const f33 = f7 - expTotal;
+        document.getElementById("p1_f33").value = f33;
+        document.getElementById("p1_f43").value = f33;
+
+        const f44 = Number(document.getElementById("p1_f44").value);
+        const actualDeduction = Math.min(Math.max(0, f33), f44);
+        const f45 = f33 - actualDeduction;
+        document.getElementById("p1_f45").value = f45;
+
+        // --- 4ページ目（貸借対照表）の連動 ---
+        document.getElementById("p4_inventory").value = f5; // 期末棚卸
+        document.getElementById("p4_income").value = f33; // 控除前所得
+
+        let assetTotal = 0;
+        document.querySelectorAll(".asset").forEach((el) => (assetTotal += Number(el.value)));
+        assetTotal += f5;
+        document.getElementById("p4_asset_total").value = assetTotal;
+
+        let debtTotal = 0;
+        document.querySelectorAll(".debt").forEach((el) => (debtTotal += Number(el.value)));
+        debtTotal += f33;
+        document.getElementById("p4_debt_total").value = debtTotal;
+      }
+    </script>
+  </body>
+</html>
