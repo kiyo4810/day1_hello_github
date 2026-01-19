@@ -291,155 +291,136 @@
       <div class="footer-num">- 1 -</div>
     </div>
 
-    <div class="page-container" id="p2">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end">
-        <div style="font-size: 20px">令和 <input type="text" style="width: 30px; border-bottom: 1px solid #000" /> 年分</div>
-        <div class="form-title" style="width: 50%; border-bottom: none">所得税青色申告決算書（一般用）</div>
-        <div style="text-align: right; font-size: 12px">[提出用] FA3025</div>
-      </div>
+<div class="page-container" id="p2">
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+    <div style="font-size: 18px">令和 <input type="text" style="width: 40px; border-bottom: 1px solid #000; text-align: center" /> 年分</div>
+    <div class="form-title" style="width: 50%; border-bottom: none">所得税青色申告決算書（一般用）</div>
+    <div style="text-align: right; font-size: 12px">[提出用] FA3025<br>2ページ目</div>
+  </div>
 
-      <div style="display: flex; gap: 20px; margin-top: 10px">
-        <div style="flex: 1">
-          <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px">○月別売上（収入）金額及び仕入金額</div>
-          <table>
-            <colgroup>
-              <col width="15%" />
-              <col width="42.5%" />
-              <col width="42.5%" />
-            </colgroup>
-            <tr>
-              <th>月</th>
-              <th>売上（収入）金額</th>
-              <th>仕 入 金 額</th>
-            </tr>
-            <tbody id="month-grid"></tbody>
-            <tr>
-              <td>家事消費等</td>
-              <td><input type="text" class="m-s" oninput="sumM()" onblur="fmt(this)" /></td>
-              <td style="background: #eee"></td>
-            </tr>
-            <tr>
-              <td>雑収入</td>
-              <td><input type="text" class="m-s" oninput="sumM()" onblur="fmt(this)" /></td>
-              <td style="background: #eee"></td>
-            </tr>
-            <tr style="background: var(--bg-pale)">
-              <td>計</td>
-              <td><input type="text" id="ms_total" class="readonly" /></td>
-              <td><input type="text" id="mc_total" class="readonly" /></td>
-            </tr>
-          </table>
-        </div>
+  <div style="margin-bottom: 30px">
+    <div style="font-size: 14px; font-weight: bold; margin-bottom: 5px; border-left: 4px solid var(--line-green); padding-left: 8px;">○月別売上（収入）金額及び仕入金額</div>
+    <table style="width: 100%">
+      <colgroup>
+        <col width="10%" />
+        <col width="45%" />
+        <col width="45%" />
+      </colgroup>
+      <tr>
+        <th>月</th>
+        <th>売上（収入）金額（円）</th>
+        <th>仕 入 金 額（円）</th>
+      </tr>
+      <tbody id="month-grid-full">
+        </tbody>
+      <tr>
+        <td align="center">家事消費等</td>
+        <td><input type="text" class="m-s" oninput="sumM()" onblur="fmt(this)" /></td>
+        <td style="background: #eee"></td>
+      </tr>
+      <tr>
+        <td align="center">雑収入</td>
+        <td><input type="text" class="m-s" oninput="sumM()" onblur="fmt(this)" /></td>
+        <td style="background: #eee"></td>
+      </tr>
+      <tr style="background: var(--bg-pale); font-weight: bold">
+        <td align="center">計</td>
+        <td><input type="text" id="ms_total" class="readonly" /></td>
+        <td><input type="text" id="mc_total" class="readonly" /></td>
+      </tr>
+    </table>
+  </div>
 
-        <div style="flex: 1.2">
-          <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px">○給料賃金の内訳</div>
-          <table style="margin-bottom: 15px">
-            <tr>
-              <th>氏名</th>
-              <th>年齢</th>
-              <th>従事月</th>
-              <th>支給額計</th>
-              <th>源泉徴収税</th>
-            </tr>
-            <tr>
-              <td><input type="text" class="text-left" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" class="sal-val" oninput="sumSal()" onblur="fmt(this)" /></td>
-              <td><input type="text" onblur="fmt(this)" /></td>
-            </tr>
-            <tr>
-              <td><input type="text" class="text-left" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" class="sal-val" oninput="sumSal()" onblur="fmt(this)" /></td>
-              <td><input type="text" onblur="fmt(this)" /></td>
-            </tr>
-            <tr style="background: #eee">
-              <td>計</td>
-              <td colspan="2"></td>
-              <td><input type="text" id="sal_total" class="readonly" /></td>
-              <td></td>
-            </tr>
-          </table>
-
-          <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px">○専従者給与の内訳</div>
-          <table>
-            <tr>
-              <th>氏名</th>
-              <th>続柄</th>
-              <th>年齢</th>
-              <th>支給額計</th>
-              <th>源泉徴収税</th>
-            </tr>
-            <tr>
-              <td><input type="text" class="text-left" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" class="family-sal" oninput="sumFam()" onblur="fmt(this)" /></td>
-              <td><input type="text" onblur="fmt(this)" /></td>
-            </tr>
-            <tr style="background: #eee">
-              <td>計</td>
-              <td colspan="2"></td>
-              <td><input type="text" id="fam_total" class="readonly" /></td>
-              <td></td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
-      <div style="display: flex; gap: 20px; margin-top: 15px">
-        <div style="flex: 1">
-          <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px">○貸倒引当金繰入額の計算</div>
-          <table>
-            <tr>
-              <td style="width: 70%">個別評価による繰入額</td>
-              <td class="col-num">①</td>
-              <td><input type="text" id="bad_debt_1" oninput="calcBadDebt()" onblur="fmt(this)" /></td>
-            </tr>
-            <tr>
-              <td>一括評価対象の債権合計</td>
-              <td class="col-num">②</td>
-              <td><input type="text" id="bad_debt_base" oninput="calcBadDebt()" onblur="fmt(this)" /></td>
-            </tr>
-            <tr>
-              <td>一括評価 繰入限度額 (②×5.5/1000)</td>
-              <td class="col-num">③</td>
-              <td><input type="text" id="bad_debt_limit" class="readonly" /></td>
-            </tr>
-            <tr style="background: var(--bg-pale)">
-              <td>本年分繰入額 (①+③)</td>
-              <td class="col-num">⑤</td>
-              <td><input type="text" id="bad_debt_total" class="readonly" /></td>
-            </tr>
-          </table>
-        </div>
-
-        <div style="flex: 1.2">
-          <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px">○青色申告特別控除額の計算</div>
-          <table>
-            <tr>
-              <td style="width: 70%">特別控除前の所得金額 (1ページ㊸)</td>
-              <td class="col-num">⑦</td>
-              <td><input type="text" id="p2_income_pre" class="readonly" /></td>
-            </tr>
-            <tr>
-              <td>65万円(又は55万円)と⑦の少ない方</td>
-              <td class="col-num">⑧</td>
-              <td><input type="text" id="p2_deduction" class="readonly" /></td>
-            </tr>
-            <tr style="background: #c8e6c9">
-              <td><b>青色申告特別控除額</b></td>
-              <td class="col-num">⑨</td>
-              <td><input type="text" id="p2_deduction_final" class="readonly" /></td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="footer-num">- 2 -</div>
+  <div style="display: flex; gap: 20px">
+    <div style="flex: 1">
+      <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px; border-left: 4px solid var(--line-green); padding-left: 8px;">○給料賃金の内訳</div>
+      <table>
+        <tr>
+          <th>氏名</th>
+          <th>年齢</th>
+          <th>従事月</th>
+          <th>支給額（円）</th>
+        </tr>
+        <tr><td><input type="text" class="text-left" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" class="sal-val" oninput="sumSal()" onblur="fmt(this)" /></td></tr>
+        <tr><td><input type="text" class="text-left" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" class="sal-val" oninput="sumSal()" onblur="fmt(this)" /></td></tr>
+        <tr><td><input type="text" class="text-left" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" class="sal-val" oninput="sumSal()" onblur="fmt(this)" /></td></tr>
+        <tr style="background: #eee">
+          <td colspan="3" align="center">計</td>
+          <td><input type="text" id="sal_total" class="readonly" /></td>
+        </tr>
+      </table>
     </div>
 
+    <div style="flex: 1">
+      <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px; border-left: 4px solid var(--line-green); padding-left: 8px;">○専従者給与の内訳</div>
+      <table>
+        <tr>
+          <th>氏名</th>
+          <th>続柄</th>
+          <th>年齢</th>
+          <th>支給額（円）</th>
+        </tr>
+        <tr><td><input type="text" class="text-left" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" class="family-sal" oninput="sumFam()" onblur="fmt(this)" /></td></tr>
+        <tr><td><input type="text" class="text-left" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" class="family-sal" oninput="sumFam()" onblur="fmt(this)" /></td></tr>
+        <tr style="background: #eee">
+          <td colspan="3" align="center">計</td>
+          <td><input type="text" id="fam_total" class="readonly" /></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 20px; margin-top: 30px">
+    <div style="flex: 1">
+      <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px; border-left: 4px solid var(--line-green); padding-left: 8px;">○貸倒引当金繰入額の計算</div>
+      <table>
+        <tr>
+          <td style="width: 70%">個別評価による繰入額</td>
+          <td class="col-num">①</td>
+          <td><input type="text" id="bad_debt_1" oninput="calcBadDebt()" onblur="fmt(this)" /></td>
+        </tr>
+        <tr>
+          <td>一括評価対象の債権合計</td>
+          <td class="col-num">②</td>
+          <td><input type="text" id="bad_debt_base" oninput="calcBadDebt()" onblur="fmt(this)" /></td>
+        </tr>
+        <tr>
+          <td>繰入限度額 (②×5.5/1000)</td>
+          <td class="col-num">③</td>
+          <td><input type="text" id="bad_debt_limit" class="readonly" /></td>
+        </tr>
+        <tr style="background: var(--bg-pale); font-weight: bold">
+          <td>本年分繰入額 (①+③)</td>
+          <td class="col-num">⑤</td>
+          <td><input type="text" id="bad_debt_total" class="readonly" /></td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="flex: 1">
+      <div style="font-size: 13px; font-weight: bold; margin-bottom: 5px; border-left: 4px solid var(--line-green); padding-left: 8px;">○青色申告特別控除額の計算</div>
+      <table>
+        <tr>
+          <td style="width: 70%">控除前所得金額 (1ページ㊸)</td>
+          <td class="col-num">⑦</td>
+          <td><input type="text" id="p2_income_pre" class="readonly" /></td>
+        </tr>
+        <tr>
+          <td>控除限度額(65万円等)との比較</td>
+          <td class="col-num">⑧</td>
+          <td><input type="text" id="p2_deduction" class="readonly" /></td>
+        </tr>
+        <tr style="background: #c8e6c9; font-weight: bold">
+          <td>青色申告特別控除額</td>
+          <td class="col-num">⑨</td>
+          <td><input type="text" id="p2_deduction_final" class="readonly" /></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer-num" style="margin-top: 50px">- 2 -</div>
+</div>
     <div class="page-container" id="p3">
       <div class="form-title">減価償却費の計算</div>
       <table>
@@ -522,108 +503,102 @@
       <div class="footer-num">- 4 -</div>
     </div>
 
-    <script>
-      const nf = new Intl.NumberFormat("ja-JP");
-      const val = (s) => parseFloat(String(s).replace(/,/g, "")) || 0;
-      const set = (id, v) => {
-        const el = document.getElementById(id);
-        if (el) el.value = nf.format(v);
-      };
+<script>
+  const nf = new Intl.NumberFormat("ja-JP");
+  const val = (s) => parseFloat(String(s).replace(/,/g, "")) || 0;
+  const set = (id, v) => {
+    const el = document.getElementById(id);
+    if (el) el.value = nf.format(v);
+  };
 
-      // 月別行生成
-      const mRows = document.getElementById("month-rows");
-      for (let i = 1; i <= 6; i++) {
-        mRows.innerHTML += `<tr><td>${i}月</td><td><input type="text" class="m-s" oninput="sumM()"></td><td><input type="text" class="m-c" oninput="sumM()"></td><td>${i + 6}月</td><td><input type="text" class="m-s" oninput="sumM()"></td><td><input type="text" class="m-c" oninput="sumM()"></td></tr>`;
+  // --- 初期化：2ページ目の12ヶ月行を自動生成 ---
+  window.onload = () => {
+    const mGridFull = document.getElementById('month-grid-full');
+    if (mGridFull) {
+      mGridFull.innerHTML = ""; // 重複防止
+      for (let i = 1; i <= 12; i++) {
+        mGridFull.innerHTML += `
+          <tr>
+            <td align="center">${i}月</td>
+            <td><input type="text" class="m-s" oninput="sumM()" onblur="fmt(this)" /></td>
+            <td><input type="text" class="m-c" oninput="sumM()" onblur="fmt(this)" /></td>
+          </tr>`;
       }
-      // 減価償却行生成
-      const dRows = document.getElementById("dep-rows");
-      for (let i = 0; i < 5; i++) {
-        dRows.innerHTML += `<tr><td><input type="text" class="text-left"></td><td><input type="text" onblur="fmt(this)"></td><td><input type="text"></td><td><input type="text" class="d-val" oninput="sumD()" onblur="fmt(this)"></td><td><input type="text" onblur="fmt(this)"></td></tr>`;
-      }
+    }
+    // 減価償却行生成
+    const dRows = document.getElementById("dep-rows");
+    if (dRows) {
+        dRows.innerHTML = "";
+        for (let i = 0; i < 5; i++) {
+            dRows.innerHTML += `<tr><td><input type="text" class="text-left"></td><td><input type="text" onblur="fmt(this)"></td><td><input type="text"></td><td><input type="text" class="d-val" oninput="sumD()" onblur="fmt(this)"></td><td><input type="text" onblur="fmt(this)"></td></tr>`;
+        }
+    }
+  };
 
-      function fmt(el) {
-        el.value = el.value ? nf.format(val(el.value)) : "";
-        calc();
-      }
+  function fmt(el) {
+    el.value = el.value ? nf.format(val(el.value)) : "";
+    calc();
+  }
 
-      function sumM() {
-        let s = 0,
-          c = 0;
-        document.querySelectorAll(".m-s").forEach((e) => (s += val(e.value)));
-        document.querySelectorAll(".m-c").forEach((e) => (c += val(e.value)));
-        set("ms_total", s);
-        set("mc_total", c);
-        set("f1", s);
-        set("f3", c);
-        calc();
-      }
+  // 2ページ目：月別合計を1ページ目の①売上・③仕入へ
+  function sumM() {
+    let s = 0, c = 0;
+    document.querySelectorAll(".m-s").forEach((e) => (s += val(e.value)));
+    document.querySelectorAll(".m-c").forEach((e) => (c += val(e.value)));
+    set("ms_total", s);
+    set("mc_total", c);
+    set("f1", s); // 1P売上
+    set("f3", c); // 1P仕入
+    calc();
+  }
 
-      function sumD() {
-        let t = 0;
-        document.querySelectorAll(".d-val").forEach((e) => (t += val(e.value)));
-        set("d_total", t);
-        set("f18", t);
-        calc();
-      }
+  // 3ページ目：減価償却費を1ページ目の⑱へ
+  function sumD() {
+    let t = 0;
+    document.querySelectorAll(".d-val").forEach((e) => (t += val(e.value)));
+    set("d_total", t);
+    set("f18", t); // 1P減価償却費
+    calc();
+  }
 
-      function sumBS() {
-        let a = 0,
-          l = 0;
-        document.querySelectorAll(".ast-e").forEach((e) => (a += val(e.value)));
-        document.querySelectorAll(".liab-e").forEach((e) => (l += val(e.value)));
-        a += val(document.getElementById("bs_inv_e").value);
-        l += val(document.getElementById("bs_income").value);
-        set("ast_total", a);
-        set("liab_total", l);
-      }
+  // 2ページ目：給料賃金合計を1ページ目の⑳へ
+  function sumSal() {
+    let t = 0;
+    document.querySelectorAll(".sal-val").forEach(e => t += val(e.value));
+    set("sal_total", t);
+    // 1Pの経費リストの中から「給料賃金」を探してセット
+    // ※ 20番(⑳)のinputにid="f20"を付けておくと確実ですが、なければ以下で対応
+    const f20 = document.getElementById("f20");
+    if(f20) f20.value = nf.format(t); 
+    calc();
+  }
 
-      function calc() {
-        const f1 = val(document.getElementById("f1").value),
-          f2 = val(document.getElementById("f2").value),
-          f3 = val(document.getElementById("f3").value);
-        const f4 = f2 + f3;
-        set("f4", f4);
-        const f5 = val(document.getElementById("f5").value);
-        const f6 = f4 - f5;
-        set("f6", f6);
-        const f7 = f1 - f6;
-        set("f7", f7);
+  // 2ページ目：専従者給与を1ページ目の㊳へ
+  function sumFam() {
+    let t = 0;
+    document.querySelectorAll(".family-sal").forEach(e => t += val(e.value));
+    set("fam_total", t);
+    set("f38", t); 
+    calc();
+  }
 
-        let exp = 0;
-        document.querySelectorAll(".exp").forEach((e) => (exp += val(e.value)));
-        exp += val(document.getElementById("f18").value); // 減価償却費
-        set("f32", exp);
-        const f33 = f7 - exp;
-        set("f33", f33);
+  // 2ページ目：貸倒引当金の計算を1ページ目の㊴へ
+  function calcBadDebt() {
+    const individual = val(document.getElementById("bad_debt_1").value);
+    const base = val(document.getElementById("bad_debt_base").value);
+    const limit = Math.floor(base * 0.0055);
+    set("bad_debt_limit", limit);
+    const total = individual + limit;
+    set("bad_debt_total", total);
+    set("f39", total); // 1P繰入
+    calc();
+  }
 
-        let rev = 0;
-        document.querySelectorAll(".res-rev").forEach((e) => (rev += val(e.value)));
-        set("f37", rev);
-        let resE = 0;
-        document.querySelectorAll(".res-exp").forEach((e) => (resE += val(e.value)));
-        set("f42", resE);
-
-        const f43 = f33 + rev - resE;
-        set("f43", f43);
-        const ded = Math.min(Math.max(0, f43), val(document.getElementById("f44").value));
-        set("f45", f43 - ded);
-
-        // BS連動
-        set("bs_inv_s", f2);
-        set("bs_inv_e", f5);
-        set("bs_income", f43);
-        sumBS();
-        // --- ここから追記：2ページ目（内訳計算・特別控除）への連動 ---
-        const incomePre = f43; // 1ページ目の控除前所得
-        set("p2_income_pre", incomePre);
-
-        const limit65 = val(document.getElementById("f44").value); // 特別控除限度額(65万)
-        const deduction = Math.min(Math.max(0, incomePre), limit65);
-
-        set("p2_deduction", deduction);
-        set("p2_deduction_final", deduction);
-        // --- ここまで追記 ---
-      }
-    </script>
+  function sumBS() {
+    let a = 0, l = 0;
+    document.querySelectorAll(".ast-e").forEach((e) => (a += val(e.value)));
+    document.querySelectorAll(".liab-e").forEach((e) => (l += val(e.value)));
+    a += val(document.getElementById("bs_inv_e").value);
+    l += val(document
   </body>
 </html>
