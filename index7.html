@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>入力出力表示の練習</title>
+  </head>
+  <body>
+    <h1>入力出力表示の練習</h1>
+    <div>in: <input type="number" id="in" oninput="cal()" /></div>
+    <div>outcome: <input type="number" id="outcome" readonly /></div>
+    <script>
+      function cal() {
+        const inputElement = document.getElementById("in");
+        const outputElement = document.getElementById("outcome");
+        const x = Number(inputElement.value);
+        outputElement.value = x * 1000;
+      }
+    </script>
+  </body>
+</html>
